@@ -1718,6 +1718,7 @@ ol {
 .product__details__text p {
     color: #444444;
     margin-bottom: 28px;
+    text-align: justify;
 }
 
 .product__details__price {
@@ -1794,6 +1795,7 @@ ol {
     text-transform: uppercase;
     padding: 14px 30px 15px;
     border-radius: 50px;
+    border: none;
     float: left;
     margin-right: 10px;
     margin-bottom: 10px;
@@ -2111,6 +2113,8 @@ ol {
 .shop__cart__table tbody tr .cart__product__item img {
     float: left;
     margin-right: 25px;
+    width: 90px;
+    height: 90px;
 }
 
 .shop__cart__table tbody tr .cart__product__item .cart__product__item__title {

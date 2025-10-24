@@ -49,7 +49,7 @@ public class ProductDAO extends DBContext {
                 p.setProductID(rs.getInt("ProductID"));
                 p.setCategoryID(rs.getInt("CategoryID"));
                 p.setProductName(rs.getString("ProductName"));
-                p.setPrice(rs.getDouble("Price"));
+                p.setPrice(rs.getInt("Price"));
                 p.setDescription(rs.getString("Description"));
                 p.setCreatedAt(rs.getDate("CreatedAt"));
 

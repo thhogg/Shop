@@ -44,7 +44,7 @@ public class ProductCardDAO extends DBContext {
                 ProductCard p = new ProductCard(
                         rs.getInt("ProductID"),
                         rs.getString("ProductName"),
-                        rs.getDouble("Price"),
+                        rs.getInt("Price"),
                         rs.getString("MainImageUrl"),
                         rs.getInt("CategoryID"),
                         rs.getInt("ProductColorID")
@@ -74,7 +74,7 @@ public class ProductCardDAO extends DBContext {
                 ProductCard p = new ProductCard();
                 p.setProductID(rs.getInt("ProductID"));
                 p.setProductName(rs.getString("ProductName"));
-                p.setPrice(rs.getDouble("Price"));
+                p.setPrice(rs.getInt("Price"));
                 p.setMainImage(rs.getString("mainImageUrl"));
                 p.setCategoryId(rs.getInt("CategoryID"));
                 p.setProductColorId(rs.getInt("ProductColorID"));
@@ -102,7 +102,7 @@ public class ProductCardDAO extends DBContext {
                 ProductCard p = new ProductCard(
                         rs.getInt("ProductID"),
                         rs.getString("ProductName"),
-                        rs.getDouble("Price"),
+                        rs.getInt("Price"),
                         rs.getString("mainImageUrl"),
                         rs.getInt("CategoryID"),
                         rs.getInt("ProductColorID")
@@ -132,7 +132,7 @@ public class ProductCardDAO extends DBContext {
                 ProductCard p = new ProductCard(
                         rs.getInt("ProductID"),
                         rs.getString("ProductName"),
-                        rs.getDouble("Price"),
+                        rs.getInt("Price"),
                         rs.getString("MainImageUrl"),
                         rs.getInt("CategoryID"),
                         rs.getInt("ProductColorID")

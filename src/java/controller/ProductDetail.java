@@ -93,8 +93,8 @@ public class ProductDetail extends HttpServlet {
         request.setAttribute("productColorIdRadio", productColorId);
         request.setAttribute("images", images);
 
-        // Lấy size-radio từ request
-        String productVariantIdStr = request.getParameter("size-radio");
+        // Lấy size_radio từ request
+        String productVariantIdStr = request.getParameter("size_radio");
 
         // Kiểm tra nếu productVariantIdStr null hoặc màu mới được chọn thì reset size sang size đầu tiên
         // Nếu màu mới được chọn thì luôn lấy size đầu tiên của màu đó
@@ -132,7 +132,7 @@ public class ProductDetail extends HttpServlet {
                 break;
             }
         }
-        request.setAttribute("quantity", quantity);
+        request.setAttribute("availability", quantity);
 
         request.getRequestDispatcher("product-details.jsp").forward(request, response);
     }

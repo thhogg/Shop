@@ -11,7 +11,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -103,31 +104,48 @@
                                 <span>( 138 reviews )</span>
                             </div>
                             <div class="product__details__price">
-                                ${product.price} 
-                                <span>${String.format("%.1f", product.price * 1.2)}</span>
+                                <fmt:setLocale value="en_US" />
+                                <fmt:formatNumber value="${product.price}" type="number" groupingUsed="true"/>
+                                <span>
+                                    <fmt:formatNumber value="${product.price*1.2}" type="number" groupingUsed="true"/>
+                                </span>
                             </div>
                             <p>
                                 ${product.description}
                             </p>
-                            <div class="product__details__button">
-                                <div class="quantity">
-                                    <span>Quantity:</span>
-                                    <div class="pro-qty">
-                                        <input type="text" value="1" />
+
+                            <c:forEach items="${images}" var="i">
+                                <c:if test="${i.main==true}">
+                                    <c:set var="mainImage" value="${i.imageUrl}"/>
+                                </c:if>
+                            </c:forEach>
+
+                            <form action="cart" method="post">
+                                <input type="text" name="cartItem_image" value="${mainImage}" hidden="">
+                                <input type="number" name="cartItem_price" value="${product.price}" hidden="">
+                                <input type="text" name="cartItem_productName" value="${product.productName}" hidden="">
+                                <input type="text" name="cartItem_productVariantID" value="${productVariantIdRadio}" hidden="">
+
+                                <div class="product__details__button">
+                                    <div class="quantity">
+                                        <span>Quantity:</span>
+                                        <div class="pro-qty">
+                                            <input type="text" value="1" name="cartItem_quantity"/>
+                                        </div>
                                     </div>
+                                    <button type="submit" class="cart-btn"><span class="icon_bag_alt"></span> Add to cart</button>
+                                    <ul>
+                                        <li>
+                                            <a href="#"><span class="icon_heart_alt"></span></a>
+                                        </li>
+                                        <li>
+                                            <a href="#"><span class="icon_adjust-horiz"></span></a>
+                                        </li>
+                                    </ul>
                                 </div>
-                                <a href="#" class="cart-btn"
-                                   ><span class="icon_bag_alt"></span> Add to cart</a
-                                >
-                                <ul>
-                                    <li>
-                                        <a href="#"><span class="icon_heart_alt"></span></a>
-                                    </li>
-                                    <li>
-                                        <a href="#"><span class="icon_adjust-horiz"></span></a>
-                                    </li>
-                                </ul>
-                            </div>
+
+                            </form>            
+
                             <div class="product__details__widget">
                                 <ul>
                                     <li>
@@ -164,7 +182,7 @@
                                                 <c:forEach items="${variants}" var="v">
                                                     <label for="${v.size.name}-btn" class="${productVariantIdRadio==v.productVariantID?'active':''}">
                                                         <input type="radio" id="${v.size.name}-btn"
-                                                               name="size-radio"
+                                                               name="size_radio"
                                                                value="${v.productVariantID}"
                                                                ${productVariantIdRadio==v.productVariantID?'checked':''}
                                                                onchange="submitProductForm()"/>
@@ -176,7 +194,7 @@
                                     </form>
                                     <li>
                                         <span>Quantity:</span>
-                                        <p>${quantity}</p>
+                                        <p>${availability}</p>
                                     </li>
                                 </ul>
                             </div>

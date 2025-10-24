@@ -14,7 +14,7 @@ import java.util.Objects;
 public class ProductCard {
     private int productID;
     private String productName;
-    private double price;
+    private int price;
     private String mainImage;   
     private int categoryId;
     private int productColorId;
@@ -22,7 +22,7 @@ public class ProductCard {
     public ProductCard() {
     }
 
-    public ProductCard(int productID, String productName, double price, String mainImage, int categoryId, int productColorId) {
+    public ProductCard(int productID, String productName, int price, String mainImage, int categoryId, int productColorId) {
         this.productID = productID;
         this.productName = productName;
         this.price = price;
@@ -47,11 +47,11 @@ public class ProductCard {
         this.productName = productName;
     }
 
-    public double getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
@@ -82,12 +82,12 @@ public class ProductCard {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 37 * hash + this.productID;
-        hash = 37 * hash + Objects.hashCode(this.productName);
-        hash = 37 * hash + (int) (Double.doubleToLongBits(this.price) ^ (Double.doubleToLongBits(this.price) >>> 32));
-        hash = 37 * hash + Objects.hashCode(this.mainImage);
-        hash = 37 * hash + this.categoryId;
-        hash = 37 * hash + this.productColorId;
+        hash = 61 * hash + this.productID;
+        hash = 61 * hash + Objects.hashCode(this.productName);
+        hash = 61 * hash + this.price;
+        hash = 61 * hash + Objects.hashCode(this.mainImage);
+        hash = 61 * hash + this.categoryId;
+        hash = 61 * hash + this.productColorId;
         return hash;
     }
 
@@ -106,7 +106,7 @@ public class ProductCard {
         if (this.productID != other.productID) {
             return false;
         }
-        if (Double.doubleToLongBits(this.price) != Double.doubleToLongBits(other.price)) {
+        if (this.price != other.price) {
             return false;
         }
         if (this.categoryId != other.categoryId) {
@@ -120,6 +120,6 @@ public class ProductCard {
         }
         return Objects.equals(this.mainImage, other.mainImage);
     }
-    
+
     
 }

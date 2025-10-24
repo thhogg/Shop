@@ -5,7 +5,8 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -13,7 +14,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Shop</title>
 
-        <!-- Google Font -->
+        <!--  Google Font -->
         <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap"
               rel="stylesheet">
@@ -31,7 +32,7 @@
     </head>
 
     <body>
-        <!-- Header Section Begin -->      
+        <!-- Header Section Begin  -->
         <%@include file="includes/Header.jsp" %>       
         <!-- Header Section End -->
 
@@ -123,31 +124,34 @@
                             <c:forEach items="${productCards}" var="pc">
                                 <div class="col-lg-4 col-md-6">
 
-<!--                                    <form action="product" method="get" id="shop_product_form">
-                                        <input type="hidden" name="id" value="${pc.productID}" />
-                                        <input type="hidden" name="color_radio" value="${pc.productColorId}" />-->
+                                    <!--                                    <form action="product" method="get" id="shop_product_form">
+                                                                            <input type="hidden" name="id" value="${pc.productID}" />
+                                                                            <input type="hidden" name="color_radio" value="${pc.productColorId}" />-->
 
-                                        <div class="product__item">
-                                            <div class="product__item__pic set-bg" data-setbg="${pc.mainImage}">
-                                                <ul class="product__hover">
-                                                    <li><a href="${pc.mainImage}" class="image-popup"><span class="arrow_expand"></span></a></li>
-                                                    <li><a href="#"><span class="icon_heart_alt"></span></a></li>
-                                                    <li><a href="#"><span class="icon_bag_alt"></span></a></li>
-                                                </ul>
+                                    <div class="product__item">
+                                        <div class="product__item__pic set-bg" data-setbg="${pc.mainImage}">
+                                            <ul class="product__hover">
+                                                <li><a href="${pc.mainImage}" class="image-popup"><span class="arrow_expand"></span></a></li>
+                                                <li><a href="#"><span class="icon_heart_alt"></span></a></li>
+                                                <li><a href="#"><span class="icon_bag_alt"></span></a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="product__item__text">
+                                            <h6><a href="product?id=${pc.productID}&color_radio=${pc.productColorId}">${pc.productName}</a></h6>
+                                            <div class="rating">
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
                                             </div>
-                                            <div class="product__item__text">
-                                                <h6><a href="product?id=${pc.productID}&color_radio=${pc.productColorId}">${pc.productName}</a></h6>
-                                                <div class="rating">
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                    <i class="fa fa-star"></i>
-                                                </div>
-                                                <div class="product__price">${pc.price}</div>
+                                            <div class="product__price">
+                                                <fmt:setLocale value="en_US" />
+                                                <fmt:formatNumber value="${pc.price}" type="number" groupingUsed="true"/>
                                             </div>
                                         </div>
-<!--                                    </form>-->
+                                    </div>
+                                    <!--                                    </form>-->
                                 </div>  
                             </c:forEach>
 

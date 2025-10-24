@@ -16,7 +16,7 @@ public class Product {
     private int productID;
     private int categoryID; 
     private String productName;
-    private Double price;
+    private int price;
     private String description;
     private Date createdAt;
 
@@ -25,15 +25,15 @@ public class Product {
     public Product() {
     }
 
-    public Product(int productID, int categoryID, String productName, Double price, String description, List<ProductColor> productColors) {
+    public Product(int productID, int categoryID, String productName, int price, String description, Date createdAt, List<ProductColor> productColors) {
         this.productID = productID;
         this.categoryID = categoryID;
         this.productName = productName;
         this.price = price;
         this.description = description;
-        setCreatedAt();
+        this.createdAt = createdAt;
         this.productColors = productColors;
-    }
+    }  
 
     public int getProductID() {
         return productID;
@@ -59,13 +59,13 @@ public class Product {
         this.productName = productName;
     }
 
-    public Double getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(int price) {
         this.price = price;
-    }
+    }   
 
     public String getDescription() {
         return description;
@@ -94,17 +94,5 @@ public class Product {
     public void setProductColors(List<ProductColor> productColors) {
         this.productColors = productColors;
     }
-
-    @Override
-    public String toString() {
-        return "Product{\n" + " productID = " + productID 
-                + ",\n categoryID = " + categoryID 
-                + ",\n productName = " + productName 
-                + ",\n price = " + price 
-                + ",\n description = " + description    
-                + ",\n createdAt = " + createdAt + "\n}";
-    }
-
-        
-    
+ 
 }

@@ -1,0 +1,127 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/ClientSide/css.css to edit this template
+*/
+/* 
+    Created on : Oct 23, 2025, 10:43:12 PM
+    Author     : Leo
+*/
+
+/*---------------------
+  Filter SubCategory
+-----------------------*/
+.filter__subCategory ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.filter__subCategory li {
+  margin-bottom: 8px;
+}
+
+.filter__subCategory label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  color: #333;
+  transition: color 0.2s;
+}
+
+.filter__subCategory label:hover {
+  color: #e74c3c; /* Màu đỏ khi hover */
+}
+
+/* Ẩn checkbox mặc định */
+.filter__subCategory input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 15px;
+  height: 15px;
+  border: 2px solid #999;
+  border-radius: 4px;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Khi hover */
+.filter__subCategory input[type="checkbox"]:hover {
+  border-color: #e74c3c;
+}
+
+/* Khi checked */
+.filter__subCategory input[type="checkbox"]:checked {
+  background-color: #d02e1c;
+  border-color: #e74c3c;
+}
+
+/* Dấu check (✓) */
+.filter__subCategory input[type="checkbox"]:checked::after {
+  content: "✓";
+  color: white;
+  font-size: 10px;
+  position: absolute;
+  top: 0;
+  left: 3px;
+}
+
+/* Khi checkbox được chọn → đổi màu chữ */
+.filter__subCategory input[type="checkbox"]:checked + span {
+  color: #e63946;
+  font-weight: 500;
+}
+
+
+/*Filter SubCategory End*/
+
+/*---------------------
+  Submit Button
+-----------------------*/
+.filter-btn-container {
+  margin-top: 5px;
+  text-align: center;
+  padding: 0 10px;
+}
+
+.filter-btn-container button {
+  width: 100%;
+  max-width: 110px;
+  background-color: #de2331;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  margin-right: 100px;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 3px 6px rgba(230, 57, 70, 0.25);
+}
+
+/* Hiệu ứng hover */
+.filter-btn-container button:hover {
+  background-color: #c92e3c;
+  box-shadow: 0 4px 10px rgba(230, 57, 70, 0.35);
+  transform: translateY(-2px);
+}
+
+/* Khi bấm giữ */
+.filter-btn-container button:active {
+  background-color: #a72330;
+  transform: scale(0.97);
+  box-shadow: 0 2px 5px rgba(230, 57, 70, 0.25);
+}
+
+/* Focus bằng bàn phím */
+.filter-btn-container button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.3);
+}
+
+
+/*Submit Button End*/

@@ -17,6 +17,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Home</title>
 
         <!-- Google Font -->
@@ -49,7 +50,7 @@
                         <div class="breadcrumb__links">
                             <a href="./index.html"><i class="fa fa-home"></i> Home</a>
                             <a href="#">Women’s </a>
-                            <span>Essential structured blazer</span>
+                            <span>${product.productName}</span>
                         </div>
                     </div>
                 </div>
@@ -74,12 +75,12 @@
                             <div class="product__details__slider__content">
                                 <div class="product__details__pic__slider owl-carousel">
                                     <c:forEach items="${images}" var="i">
-                                    <img
-                                        data-hash="product-${i.imageID}"
-                                        class="product__big__img"
-                                        src="${i.imageUrl}"
-                                        alt=""
-                                        />
+                                        <img
+                                            data-hash="product-${i.imageID}"
+                                            class="product__big__img"
+                                            src="${i.imageUrl}"
+                                            alt=""
+                                            />
                                     </c:forEach>
                                 </div>
                             </div>
@@ -102,8 +103,8 @@
                                 <span>( 138 reviews )</span>
                             </div>
                             <div class="product__details__price">
-                                $ ${product.price} 
-                                <span>$ ${String.format("%.1f", product.price * 1.2)}</span>
+                                ${product.price} 
+                                <span>${String.format("%.1f", product.price * 1.2)}</span>
                             </div>
                             <p>
                                 ${product.description}
@@ -139,38 +140,39 @@
                                             </label>
                                         </div>
                                     </li>
-                                    <form action="product" method="get" id="colorSizeForm">
-                                    <li>
-                                        <span>Available color:</span>
-                                        <div class="color__checkbox">
-                                            
-                                            <c:forEach items="${product.productColors}" var="pc">
-                                                <label for="color_${pc.colorID}">
-                                                    <input type="radio" name="color_radio" 
-                                                           id="color_${pc.colorID}" value="${pc.productColorID}"
-                                                           onchange="submitForm()"
-                                                           ${productColorIdRadio==pc.productColorID?"checked":""}/>
-                                                    <span class="checkmark" style="background: ${pc.color.hexCode};"></span>
-                                                </label>
-                                            </c:forEach>
-                                            
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <span>Available size:</span>
-                                        <div class="size__btn">
-                                            <c:forEach items="${variants}" var="v">
-                                                <label for="${v.size.name}-btn" class="${productVariantIdRadio==v.productVariantID?'active':''}">
-                                                    <input type="radio" id="${v.size.name}-btn"
-                                                           name="size-radio"
-                                                           value="${v.productVariantID}"
-                                                           ${productVariantIdRadio==v.productVariantID?'checked':''}
-                                                           onchange="submitForm()"/>
-                                                    ${v.size.name}
-                                                </label>
-                                            </c:forEach>
-                                        </div>
-                                    </li>
+                                    <form action="product" method="get" id="product__colorSizeForm">
+                                        <input type="hidden" name="id" value="${product.productID}" />
+                                        <li>
+                                            <span>Available color:</span>
+                                            <div class="color__checkbox">
+
+                                                <c:forEach items="${product.productColors}" var="pc">
+                                                    <label for="color_${pc.colorID}">
+                                                        <input type="radio" name="color_radio" 
+                                                               id="color_${pc.colorID}" value="${pc.productColorID}"
+                                                               onchange="submitProductForm()"
+                                                               ${productColorIdRadio==pc.productColorID?"checked":""}/>
+                                                        <span class="checkmark" style="background: ${pc.color.hexCode};"></span>
+                                                    </label>
+                                                </c:forEach>
+
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <span>Available size:</span>
+                                            <div class="size__btn">
+                                                <c:forEach items="${variants}" var="v">
+                                                    <label for="${v.size.name}-btn" class="${productVariantIdRadio==v.productVariantID?'active':''}">
+                                                        <input type="radio" id="${v.size.name}-btn"
+                                                               name="size-radio"
+                                                               value="${v.productVariantID}"
+                                                               ${productVariantIdRadio==v.productVariantID?'checked':''}
+                                                               onchange="submitProductForm()"/>
+                                                        ${v.size.name}
+                                                    </label>
+                                                </c:forEach>
+                                            </div>
+                                        </li>
                                     </form>
                                     <li>
                                         <span>Quantity:</span>

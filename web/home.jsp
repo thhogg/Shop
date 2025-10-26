@@ -30,10 +30,8 @@
     </head>
 
     <body>
-        <!-- Header Section Begin -->
-        
-        <%@include file="includes/Header.jsp" %>
-        
+        <!-- Header Section Begin -->     
+        <%@include file="includes/Header.jsp" %>        
         <!-- Header Section End -->
 
         <!-- Categories Section Begin -->

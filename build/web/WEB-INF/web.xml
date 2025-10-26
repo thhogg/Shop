@@ -2,19 +2,39 @@
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
     <servlet>
         <servlet-name>Shop</servlet-name>
-        <servlet-class>controller.Shop</servlet-class>
+        <servlet-class>controller.home.Shop</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ProductDetail</servlet-name>
-        <servlet-class>controller.ProductDetail</servlet-class>
+        <servlet-class>controller.home.ProductDetail</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Cart</servlet-name>
-        <servlet-class>controller.ShopCart</servlet-class>
+        <servlet-class>controller.home.ShopCart</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Home</servlet-name>
-        <servlet-class>controller.Home</servlet-class>
+        <servlet-class>controller.home.Home</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Login</servlet-name>
+        <servlet-class>controller.home.Login</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Error</servlet-name>
+        <servlet-class>controller.home.Error</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Logout</servlet-name>
+        <servlet-class>controller.home.Logout</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>AddProduct</servlet-name>
+        <servlet-class>controller.admin.AddProduct</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>FrontController</servlet-name>
+        <servlet-class>controller.api.FrontController</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Shop</servlet-name>
@@ -31,5 +51,25 @@
     <servlet-mapping>
         <servlet-name>Home</servlet-name>
         <url-pattern>/home</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Login</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Error</servlet-name>
+        <url-pattern>/404</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Logout</servlet-name>
+        <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddProduct</servlet-name>
+        <url-pattern>/admin/add</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>FrontController</servlet-name>
+        <url-pattern>*.do</url-pattern>
     </servlet-mapping>
 </web-app>

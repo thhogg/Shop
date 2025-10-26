@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-package controller;
+package controller.home;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,24 +11,27 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  *
  * @author Leo
  */
-public class Home extends HttpServlet {
+public class Logout extends HttpServlet {
    
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        request.getRequestDispatcher("home.jsp").forward(request, response);
+        HttpSession session = request.getSession();
+        session.removeAttribute("account");
+        response.sendRedirect("login");
     } 
 
-    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        
+       
     }
 
 }

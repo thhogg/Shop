@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -82,8 +83,15 @@
                     <div class="col-lg-3">
                         <div class="header__right">
                             <div class="header__right__auth">
-                                <a href="#">Login</a>
-                                <a href="#">Register</a>
+                                <c:if test="${sessionScope.account==null}">
+                                    <a href="login">Login</a>
+                                    <a href="login">Register</a>
+                                </c:if>
+                                <c:if test="${sessionScope.account!=null}">
+                                    <i class="fa fa-user"></i>
+                                    <a href="#">Account</a>
+                                    <a href="logout">Logout</a>
+                                </c:if>
                             </div>
                             <ul class="header__right__widget">
                                 <li><span class="icon_search search-switch"></span></li>
@@ -94,9 +102,9 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#"
+                                    <a href="cart"
                                        ><span class="icon_bag_alt"></span>
-                                        <div class="tip">2</div>
+                                        <div class="tip">${sessionScope.cartItems!=null?sessionScope.cartItems.size():0}</div>
                                     </a>
                                 </li>
                             </ul>

@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package controller;
+package controller.home;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -120,6 +120,7 @@ public class ShopCart extends HttpServlet {
             cartItems = new ArrayList<>();
             
             
+            
 //            // User đã đăng nhập => lấy giỏ hàng từ DB
 //            cartItems = cartService.getCartItemsByUserId(userId);
 //            total = cartItems.stream().mapToDouble(item -> item.getPrice() * item.getQuantity()).sum();
@@ -137,7 +138,7 @@ public class ShopCart extends HttpServlet {
 //            }
         }
 
-        request.setAttribute("cartItems", cartItems);
+        session.setAttribute("cartItems", cartItems);
         request.setAttribute("cartTotal", total);
 
         request.getRequestDispatcher("shop-cart.jsp").forward(request, response);

@@ -15,45 +15,45 @@
         <title>Form nhập Product</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
         <link rel="stylesheet" href="css/mystyle.css">
-<!--        <style>
-            body {
-                font-family: Arial, sans-serif;
-                margin: 20px;
-            }
-            label {
-                display: block;
-                margin-top: 10px;
-            }
-            input, select, textarea {
-                width: 300px;
-                padding: 5px;
-                margin-top: 5px;
-            }
-            .color-block {
-                border: 1px solid #ccc;
-                padding: 10px;
-                margin-top: 15px;
-                background: #f9f9f9;
-            }
-            .size-row, .image-row {
-                display: flex;
-                gap: 10px;
-                margin-top: 5px;
-            }
-            button {
-                margin-top: 10px;
-            }
-            .remove-btn {
-                background: #e74c3c;
-                color: white;
-                border: none;
-                padding: 4px 8px;
-                cursor: pointer;
-            }
-            .remove-btn:hover {
-                background: #c0392b;
-            }
-        </style>-->
+        <!--        <style>
+                    body {
+                        font-family: Arial, sans-serif;
+                        margin: 20px;
+                    }
+                    label {
+                        display: block;
+                        margin-top: 10px;
+                    }
+                    input, select, textarea {
+                        width: 300px;
+                        padding: 5px;
+                        margin-top: 5px;
+                    }
+                    .color-block {
+                        border: 1px solid #ccc;
+                        padding: 10px;
+                        margin-top: 15px;
+                        background: #f9f9f9;
+                    }
+                    .size-row, .image-row {
+                        display: flex;
+                        gap: 10px;
+                        margin-top: 5px;
+                    }
+                    button {
+                        margin-top: 10px;
+                    }
+                    .remove-btn {
+                        background: #e74c3c;
+                        color: white;
+                        border: none;
+                        padding: 4px 8px;
+                        cursor: pointer;
+                    }
+                    .remove-btn:hover {
+                        background: #c0392b;
+                    }
+                </style>-->
     </head>
     <body>
 
@@ -68,7 +68,11 @@
 
             <h1>Nhập thông tin Product</h1>
 
-            <form action="add" method="get" onsubmit="return prepareForm()">
+            <form id="productForm" 
+                  enctype="multipart/form-data"
+                  method="post"
+                  action="add">
+
                 <label>
                     <span>Tên sản phẩm:</span>
                     <input type="text" name="productName" required />
@@ -111,10 +115,7 @@
 
                 <button type="button" onclick="addColor()">+ Thêm Màu Mới</button>
 
-                <input type="hidden" id="productColorsJson" name="productColorsJson" value="">
-
-
-                <button type="submit">Thêm sản phẩm</button>
+                <button type="button" onclick="handleAjaxSubmission()">Thêm sản phẩm (AJAX)</button>
             </form>
 
         </div>

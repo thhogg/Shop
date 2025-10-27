@@ -72,4 +72,8 @@
         <servlet-name>FrontController</servlet-name>
         <url-pattern>*.do</url-pattern>
     </servlet-mapping>
+    <context-param>
+        <param-name>dir-upload</param-name>
+        <param-value>uploads</param-value>
+    </context-param>
 </web-app>

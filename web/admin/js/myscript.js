@@ -122,7 +122,7 @@ function loadSizesData() {
                 // Lưu dữ liệu vào biến toàn cục đã khai báo
                 sizesList = data;
                 console.log("Sizes data loaded successfully:", sizesList);
-                updateAllSizeSelects(); 
+                updateAllSizeSelects();
             })
             .catch(error => {
                 console.error("Error fetching colors data:", error);
@@ -138,7 +138,7 @@ window.addEventListener('load', loadSizesData);
  ***************************/
 function createColorOptions(selectedValue = null) {
     let options = '<option value="">-- Chọn màu --</option>';
-    
+
     // THAY ĐỔI: Lặp qua mảng colorsList
     colorsList.forEach(color => {
         // Lấy dữ liệu từ đối tượng trong mảng
@@ -147,7 +147,7 @@ function createColorOptions(selectedValue = null) {
         const hexCode = color.hexCode; // Có thể dùng cho xem trước màu
 
         const selectedAttr = (parseInt(colorId) === selectedValue) ? 'selected' : '';
-        
+
         // Thêm thuộc tính data-hex vào option để dễ dàng hiển thị màu
         options += `<option value="${colorId}" ${selectedAttr} data-hex="${hexCode}">${colorName} (ID: ${colorId})</option>`;
     });
@@ -167,7 +167,7 @@ function updateAllColorSelects() {
  * Thêm Màu (Add Color)
  ***************************/
 
-let productColors = []; 
+let productColors = [];
 // Loại bỏ colorCount. productColors.length sẽ thay thế vai trò của nó
 
 function addColor() {
@@ -178,7 +178,7 @@ function addColor() {
         sizes: []
     };
     productColors.push(newColor);
-    
+
     // Sử dụng độ dài mới của mảng làm index
     const colorIndex = productColors.length - 1;
 
@@ -225,7 +225,7 @@ function addColor() {
  ***********************************************************/
 function reIndexColors() {
     const colorBlocks = document.querySelectorAll('#colorsContainer .color-block');
-    
+
     // Tái lập chỉ mục (Re-index)
     colorBlocks.forEach((block, newIndex) => {
         const oldIndex = parseInt(block.dataset.index);
@@ -239,9 +239,9 @@ function reIndexColors() {
             heading.innerHTML = `Màu #${newIndex + 1}
                 <button type="button" class="remove-btn" onclick="removeColorBlock(this, ${newIndex})">Xóa màu</button>`;
         }
-        
+
         // 3. Cập nhật tất cả thuộc tính 'name' và 'onclick'
-        
+
         // Thay thế chỉ mục màu cũ bằng chỉ mục màu mới (name="colors[oldIndex][...]" -> name="colors[newIndex][...]")
         const oldIndexRegex = new RegExp(`colors\\[${oldIndex}\\]`, 'g');
         const newIndexString = `colors[${newIndex}]`;
@@ -250,7 +250,7 @@ function reIndexColors() {
             const oldName = element.getAttribute('name');
             const newName = oldName.replace(oldIndexRegex, newIndexString);
             element.setAttribute('name', newName);
-            
+
             // Nếu là input/select, giá trị (value) vẫn được giữ nguyên.
         });
 
@@ -261,7 +261,7 @@ function reIndexColors() {
             const newOnclick = oldOnclick.replace(/\((\d+)/, `(${newIndex}`);
             element.setAttribute('onclick', newOnclick);
         });
-        
+
         // 4. Cập nhật ID container và Preview Span
         block.querySelector('.sizesContainer').id = `sizesContainer-${newIndex}`;
         block.querySelector('.imagesContainer').id = `imagesContainer-${newIndex}`;
@@ -276,13 +276,13 @@ function removeColorBlock(buttonElement, index) {
     if (confirm("Bạn có chắc chắn muốn xóa khối màu này không?")) {
         // 1. Xóa phần tử khỏi mảng JS productColors
         productColors.splice(index, 1);
-        
+
         // 2. Xóa khối HTML khỏi DOM
         buttonElement.closest('.color-block').remove();
-        
+
         // 3. Tái lập chỉ mục các khối còn lại
         reIndexColors();
-        
+
         console.log(`Đã xóa màu tại index: ${index}. Mảng mới:`, productColors);
     }
 }
@@ -296,13 +296,13 @@ function removeColorBlock(buttonElement, index) {
  ***************************/
 function createSizeOptions(selectedValue = null) {
     let options = '<option value="">-- Chọn Size --</option>';
-    
+
     sizesList.forEach(size => {
         const sizeId = size.id;
         const sizeName = size.name;
 
         const selectedAttr = (parseInt(sizeId) === selectedValue) ? 'selected' : '';
-        
+
         // Gán SizeID làm value và hiển thị Tên Size
         options += `<option value="${sizeId}" ${selectedAttr}>${sizeName} (ID: ${sizeId})</option>`;
     });
@@ -328,12 +328,12 @@ let sizeCounter = 0; //  sizeCounter để form là colors[c][sizes][i]
 function addSize(colorIndex) {
     sizeCounter++; // Dùng để đảm bảo tên form là duy nhất nếu cần
     const container = document.getElementById(`sizesContainer-${colorIndex}`);
-    
+
     // Sử dụng độ dài hiện tại để tạo chỉ mục cho tên form
-    const sizeIndexInArray = productColors[colorIndex].sizes.length; 
+    const sizeIndexInArray = productColors[colorIndex].sizes.length;
 
     const div = document.createElement("div");
-    div.className = "size-item";   
+    div.className = "size-item";
 
     div.innerHTML = `
         <label>
@@ -356,10 +356,10 @@ function addSize(colorIndex) {
     `;
 
     container.appendChild(div);
-    
+
     // Khởi tạo đối tượng size mới trong mảng JS
     productColors[colorIndex].sizes.push({sizeId: null, quantity: null});
-    
+
     console.log(`Đã thêm size mới cho màu ${colorIndex} tại sizeIndex: ${sizeIndexInArray}`);
 }
 
@@ -367,16 +367,16 @@ function addSize(colorIndex) {
 function removeSize(buttonElement, colorIndex) {
     const sizeItem = buttonElement.closest('.size-item');
     const sizeContainer = sizeItem.parentNode;
-    
+
     // Tìm index của size trong DOM để tương ứng với mảng JS
     const sizeIndexInArray = Array.from(sizeContainer.children).indexOf(sizeItem);
-    
+
     // 1. Xóa khỏi DOM
     sizeItem.remove();
-    
+
     // 2. Xóa khỏi mảng JS productColors
     productColors[colorIndex].sizes.splice(sizeIndexInArray, 1);
-    
+
     // 3. Tái lập chỉ mục size trong DOM 
     Array.from(sizeContainer.children).forEach((item, newSizeIndex) => {
         item.querySelectorAll('[name^="colors"]').forEach(element => {
@@ -387,7 +387,7 @@ function removeSize(buttonElement, colorIndex) {
             // Giữ nguyên giá trị (value) của input/select
         });
     });
-    
+
     console.log(`Đã xóa size tại index ${sizeIndexInArray} của màu ${colorIndex}`);
 }
 
@@ -396,80 +396,287 @@ function removeSize(buttonElement, colorIndex) {
  * 3. Hàm Thêm Ảnh (addImage)
  ***************************/
 
-let imageCounter = 0;
+let fileIdCounter = 0; // ID độc lập cho mỗi input file
 
 function addImage(colorIndex) {
-    imageCounter++;
+    fileIdCounter++;
     const container = document.getElementById(`imagesContainer-${colorIndex}`);
-    const imageIndexInArray = productColors[colorIndex].imageUrls.length; // Dùng độ dài mảng image hiện tại
+    const uniqueFileId = fileIdCounter;
+    // Tạo ID duy nhất cho thẻ <img> preview
+    const previewId = `previewImage-${colorIndex}-${uniqueFileId}`;
 
     const div = document.createElement("div");
     div.className = "image-item";
-    
+    div.dataset.key = uniqueFileId;
+    div.style.marginBottom = "5px";
+    div.style.display = "flex"; // Quan trọng: Giúp input và img nằm trên cùng một dòng
+    div.style.alignItems = "center";
+
     div.innerHTML = `
-        <input type="text" 
-            name="colors[${colorIndex}][imageUrls][${imageIndexInArray}]" 
-            placeholder="Nhập URL ảnh" required
+        <input type="file" 
+            name="productImageFile_${colorIndex}_${uniqueFileId}" 
+            required
+            data-color-index="${colorIndex}" 
+            data-file-key="${uniqueFileId}"
+            onchange="previewImage(event, '${previewId}')" 
+            style="margin-right: 10px;"
         />
-        <button type="button" onclick="removeImage(this, ${colorIndex})">Xóa</button>
+        <img id="${previewId}" 
+             src="#" alt="Image Preview" 
+             style="max-width: 100px; max-height: 100px; border: 1px solid #ddd; margin-right: 10px; display: none;" />
+        <button type="button" onclick="removeImage(this)">Xóa</button>
     `;
 
     container.appendChild(div);
-    
-    // Thêm một placeholder rỗng vào mảng JS
-    productColors[colorIndex].imageUrls.push("");
-
-    console.log(`Đã thêm input ảnh cho màu ${colorIndex} tại imageIndex: ${imageIndexInArray}`);
-}
-
-
-// Hàm hỗ trợ: Xóa Ảnh
-function removeImage(buttonElement, colorIndex) {
-    const imageItem = buttonElement.closest('.image-item');
-    const imageContainer = imageItem.parentNode;
-    const imageIndexInArray = Array.from(imageContainer.children).indexOf(imageItem);
-    
-    // 1. Xóa khỏi DOM
-    imageItem.remove();
-    
-    // 2. Xóa khỏi mảng JS productColors
-    productColors[colorIndex].imageUrls.splice(imageIndexInArray, 1);
-    
-    // 3. Tái lập chỉ mục ảnh trong DOM
-    Array.from(imageContainer.children).forEach((item, newImageIndex) => {
-        item.querySelectorAll('[name^="colors"]').forEach(element => {
-            const oldName = element.getAttribute('name');
-            // Thay thế chỉ mục ảnh cũ bằng chỉ mục ảnh mới trong tên: imageUrls[cũ] -> imageUrls[mới]
-            const newName = oldName.replace(/imageUrls\[\d+\]/, `imageUrls[${newImageIndex}]`);
-            element.setAttribute('name', newName);
-            // Giữ nguyên giá trị (value) của input
-        });
-    });
-    
-    console.log(`Đã xóa ảnh tại index ${imageIndexInArray} của màu ${colorIndex}`);
 }
 
 
 /***************************
- * Hàm chuẩn bị dữ liệu trước khi Submit
+ * Hàm xóa ảnh
  ***************************/
-function prepareForm() {
-       
-    // 1. Chuyển mảng productColors thành chuỗi JSON
-    const colorsJsonString = JSON.stringify(productColors);
 
-    // 2. Gán chuỗi JSON vào trường ẩn
-    document.getElementById("productColorsJson").value = colorsJsonString;
+function removeImage(buttonElement) {
+    const imageItem = buttonElement.closest('.image-item');
+    imageItem.remove();
 
-    // 3. Kiểm tra các trường khác của form (Tên, Giá, Category)
-    // Đảm bảo bạn đã chọn Subcategory (Cần thêm trường name cho subcategorySelect)
-    const subcategorySelect = document.getElementById("subcategorySelect");
-    if (!subcategorySelect.value) {
-        alert("Vui lòng chọn Subcategory trước khi lưu!");
+    console.log(`Đã xóa input file và preview.`);
+}
+
+/***************************
+ * Hàm hiển thị Preview ảnh
+ ***************************/
+function previewImage(event, previewImgId) {
+    const reader = new FileReader();
+    const imagePreview = document.getElementById(previewImgId);
+
+    // Xử lý khi file đã được đọc xong
+    reader.onload = function () {
+        if (reader.readyState === 2) {
+            imagePreview.src = reader.result;
+            imagePreview.style.display = 'block'; // Hiện ảnh lên
+        }
+    }
+
+    // Đảm bảo có file được chọn
+    if (event.target.files[0]) {
+        reader.readAsDataURL(event.target.files[0]); // Bắt đầu đọc file
+    } else {
+        // Xóa preview nếu người dùng hủy chọn file
+        imagePreview.src = '#';
+        imagePreview.style.display = 'none';
+    }
+}
+
+
+/***************************
+ * Hàm thu thập tên file
+ ***************************/
+
+function collectFilenamesToJson() {
+    // 1. Reset/chuẩn bị mảng imageUrls trong productColors
+    productColors.forEach(color => {
+        color.imageUrls = []; // Sẽ chứa tên file (string)
+    });
+
+    // 2. Thu thập TÊN FILE và cập nhật productColors
+    document.querySelectorAll('input[type="file"]').forEach(fileInput => {
+        const files = fileInput.files;
+
+        if (files.length > 0) {
+            const fileName = files[0].name;
+
+            // Lấy colorIndex từ DOM (vì index này được duy trì bằng reIndexColors)
+            const colorIndexElement = fileInput.closest('.color-block');
+            if (!colorIndexElement)
+                return;
+
+            const colorIndex = parseInt(colorIndexElement.dataset.index);
+
+            // Tìm và thêm tên file vào mảng productColors
+            if (productColors[colorIndex]) {
+                productColors[colorIndex].imageUrls.push(fileName);
+            }
+        }
+    });
+}
+
+
+
+/***************************
+ * Hàm kiểm tra tính hợp lệ (Validation)
+ ***************************/
+function validateForm() {
+    const form = document.getElementById('productForm');
+
+    // Mảng lưu trữ các thông báo lỗi cụ thể
+    let errorMessages = [];
+    let isValid = true;
+
+    // 1. Kiểm tra các trường bắt buộc cơ bản (Tên, Giá, Mô tả)
+    const requiredInputs = form.querySelectorAll('input[required], textarea[required], select[required]');
+
+    requiredInputs.forEach(input => {
+        // Chỉ kiểm tra các trường không nằm trong các khối màu dynamic
+        if (!input.closest('.color-block')) {
+            if (!input.value.trim()) {
+                // Thêm thông báo và đánh dấu lỗi
+                errorMessages.push(`Trường bắt buộc còn trống: ${input.name || input.id}`);
+                isValid = false;
+            }
+            // Loại bỏ style (Không thao tác style ở đây)
+        }
+    });
+
+    // 2. Kiểm tra Subcategory
+    const subcategorySelect = form.elements.subcategorySelect;
+    if (!subcategorySelect || !subcategorySelect.value) {
+        errorMessages.push("Vui lòng chọn một Subcategory.");
+        isValid = false;
+    }
+
+
+    // 3. Kiểm tra khối Màu (Color Blocks)
+    const colorBlocks = document.querySelectorAll('.color-block');
+    if (colorBlocks.length === 0) {
+        errorMessages.push("Vui lòng thêm ít nhất một biến thể màu.");
         return false;
     }
-      
-    
-    console.log("JSON submitted:", colorsJsonString);
-    return true; // Cho phép form submit
+
+    colorBlocks.forEach((block, colorIndex) => {
+        let blockErrors = false;
+
+        // Kiểm tra tất cả các trường required bên trong khối màu
+        block.querySelectorAll('[required]').forEach(input => {
+            if (!input.value.trim()) {
+                errorMessages.push(`[Màu #${colorIndex + 1}] Trường "${input.name}" còn trống.`);
+                blockErrors = true;
+                isValid = false;
+            }
+        });
+
+        // Kiểm tra xem đã thêm ít nhất 1 size và 1 ảnh chưa (Nếu bạn muốn yêu cầu)
+        const sizesCount = block.querySelectorAll('.size-item').length;
+        const imagesCount = block.querySelectorAll('.image-item').length;
+
+        if (sizesCount === 0) {
+            errorMessages.push(`[Màu #${colorIndex + 1}] Vui lòng thêm ít nhất một Size & Số lượng.`);
+            blockErrors = true;
+            isValid = false;
+        }
+
+        if (imagesCount === 0) {
+            errorMessages.push(`[Màu #${colorIndex + 1}] Vui lòng thêm ít nhất một Ảnh sản phẩm.`);
+            blockErrors = true;
+            isValid = false;
+        }
+
+
+    });
+
+    // 4. Hiển thị thông báo tổng hợp
+    if (!isValid) {
+        // Ghi log chi tiết (hữu ích cho việc debug và style sau này)
+        console.error("Lỗi Validation Chi tiết:", errorMessages);
+
+        // Hiển thị thông báo lỗi đơn giản cho người dùng
+        const alertMessage = "Vui lòng kiểm tra và điền đầy đủ các thông tin sau:\n\n" + errorMessages.join('\n');
+        alert(alertMessage);
+    }
+
+    return isValid;
+}
+
+/**************************
+ * 
+ * @returns {undefined}
+ */
+
+function updateProductColorsFromForm() {
+    productColors.forEach((color, colorIndex) => {
+        // Cập nhật colorId
+        const colorSelect = document.querySelector(`select[name="colors[${colorIndex}][colorId]"]`);
+        color.colorId = colorSelect ? parseInt(colorSelect.value) || null : null;
+
+        // Cập nhật sizes:
+        const sizeItems = document.querySelectorAll(`#sizesContainer-${colorIndex} .size-item`);
+        color.sizes = [];
+        sizeItems.forEach((sizeItem, sizeIndex) => {
+            const sizeSelect = sizeItem.querySelector(`select[name="colors[${colorIndex}][sizes][${sizeIndex}][sizeId]"]`);
+            const qtyInput = sizeItem.querySelector(`input[name="colors[${colorIndex}][sizes][${sizeIndex}][quantity]"]`);
+            const sizeId = sizeSelect ? parseInt(sizeSelect.value) || null : null;
+            const quantity = qtyInput ? parseInt(qtyInput.value) || null : null;
+            color.sizes.push({sizeId, quantity});
+        });
+    });
+}
+
+
+function collectFilenamesToJson() {
+    // Reset lại danh sách imageUrls
+    productColors.forEach(color => {
+        color.imageUrls = [];
+    });
+
+    // Duyệt tất cả input file
+    document.querySelectorAll('input[type="file"]').forEach(fileInput => {
+        const files = fileInput.files;
+
+        if (files.length > 0) {
+            const fileName = files[0].name;
+
+            const colorIndexElement = fileInput.closest('.color-block');
+            if (!colorIndexElement)
+                return;
+
+            const colorIndex = parseInt(colorIndexElement.dataset.index);
+
+            if (productColors[colorIndex]) {
+                productColors[colorIndex].imageUrls.push(fileName);
+            }
+        }
+    });
+}
+
+
+
+/***************************
+ * Hàm Xử lý Submission Form Bằng AJAX (CÓ VALIDATION)
+ ***************************/
+function handleAjaxSubmission() {
+    if (!validateForm())
+        return;
+
+    // Cập nhật dữ liệu màu, size...
+    updateProductColorsFromForm();
+
+    // Thu thập tên file vào imageUrls
+    collectFilenamesToJson();
+
+    const colorsJsonString = JSON.stringify(productColors);
+    const jsonBlob = new Blob([colorsJsonString], {type: 'application/json'});
+
+    const form = document.getElementById('productForm');
+    // Tạo FormData từ form gốc để lấy tất cả input, file...
+    const formData = new FormData(form);
+
+    // Ghi đè hoặc thêm field productColorsJson dưới dạng Blob
+    formData.set('productColorsJson', jsonBlob, 'productColors.json');
+
+    fetch('add', {
+        method: 'POST',
+        body: formData
+    })
+            .then(res => {
+                if (!res.ok)
+                    throw new Error(`Server Error: ${res.status}`);
+                return res.text();
+            })
+            .then(result => {
+                alert("Add Product Successfully");
+                console.log(result);
+            })
+            .catch(error => {
+                console.error("Lỗi gửi form:", error);
+                alert("Lỗi: Không thể thêm sản phẩm. Vui lòng kiểm tra console.");
+            });
 }

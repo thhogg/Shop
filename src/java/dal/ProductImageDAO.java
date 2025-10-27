@@ -57,5 +57,28 @@ public class ProductImageDAO extends DBContext {
 
         return list;
     }
+    
+    public void insertProductImage(int productColorId, String imageUrl, boolean main) {
+        
+        String sql = """
+                     INSERT INTO [dbo].[ProductImage]
+                                ([ProductColorID]
+                                ,[ImageUrl]
+                                ,[Main])
+                     VALUES
+                     (?,?,?)""";
+        
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, productColorId);
+            ps.setString(2, imageUrl);
+            ps.setBoolean(3, main);
+            ps.executeUpdate();
+            
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        
+    }
 
 }

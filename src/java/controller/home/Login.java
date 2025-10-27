@@ -49,7 +49,7 @@ public class Login extends HttpServlet {
         } else {
             session.setAttribute("account", user);
             if (user.getRole()==0) {
-                request.getRequestDispatcher("admin.jsp").forward(request, response);
+                response.sendRedirect("admin/dashboard.jsp");
             } else if (user.getRole()==1) {
                 response.sendRedirect("shop");
             }

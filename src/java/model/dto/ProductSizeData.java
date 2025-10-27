@@ -8,7 +8,8 @@ package model.dto;
  *
  * @author Leo
  */
-class ProductSizeData {
+public class ProductSizeData {
+
     private int sizeId;
     private int quantity;
 
@@ -35,6 +36,10 @@ class ProductSizeData {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return "ProductSizeData{" + "sizeId=" + sizeId + ", quantity=" + quantity + '}';
+    }
+
 }

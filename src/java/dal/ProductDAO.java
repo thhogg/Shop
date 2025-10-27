@@ -14,7 +14,7 @@ import model.entity.Product;
  * @author Leo
  */
 public class ProductDAO extends DBContext {
-    
+
     private static ProductDAO instance;
 
     public ProductDAO() {
@@ -28,7 +28,7 @@ public class ProductDAO extends DBContext {
     }
 
     public Product getProductById(int productId) {
-        
+
         ProductColorDAO productColorDao = ProductColorDAO.getInstance();
 
         String sql = "SELECT [ProductID]\n"
@@ -54,12 +54,43 @@ public class ProductDAO extends DBContext {
                 p.setCreatedAt(rs.getDate("CreatedAt"));
 
                 p.setProductColors(productColorDao.getByProductId(productId));
-                
+
                 return p;
             }
         } catch (SQLException e) {
             System.out.println(e);
         }
         return null;
+    }
+
+    public int insertProduct(int categoryId, String productName, int price, String description) {
+        String sql = """
+                     INSERT INTO [dbo].[Product]
+                                ([CategoryID]
+                                ,[ProductName]
+                                ,[Price]
+                                ,[Description]
+                                ,[CreatedAt])
+                     OUTPUT INSERTED.ProductID
+                     VALUES
+                     (?,?,?,?,GETDATE())""";
+        
+        int newProductId = -1;
+        
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, categoryId);
+            ps.setString(2, productName);
+            ps.setInt(3, price); 
+            ps.setString(4, description);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                newProductId = rs.getInt("ProductID");
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return newProductId;
     }
 }

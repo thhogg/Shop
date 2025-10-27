@@ -196,7 +196,7 @@ function addColor() {
         </h3>
         
         <label>Tên màu:
-            <select name="colors[${colorIndex}][colorId]" required>
+            <select name="colors[${colorIndex}][colorId]" required onchange="onColorChange(${colorIndex}, this)">
                 ${createColorOptions()}
             </select>
             <span id="preview-${colorIndex}" class="color-preview"></span>
@@ -216,6 +216,27 @@ function addColor() {
     container.appendChild(div);
 
     console.log(`Đã thêm màu mới tại index: ${colorIndex}`);
+}
+
+/***********************************************************
+ * Kiểm tra trùng màu
+ ***********************************************************/
+
+function isDuplicateColor(colorId, currentIndex) {
+    return productColors.some((color, index) => index !== currentIndex && color.colorId === colorId);
+}
+
+function onColorChange(colorIndex, selectElement) {
+    const selectedColorId = parseInt(selectElement.value);
+    if (isDuplicateColor(selectedColorId, colorIndex)) {
+        alert("Màu này đã được chọn ở biến thể khác. Vui lòng chọn màu khác.");
+        selectElement.value = ""; // Reset lại chọn
+        productColors[colorIndex].colorId = null;
+        return false;
+    } else {
+        productColors[colorIndex].colorId = selectedColorId;
+        return true;
+    }
 }
 
 
@@ -318,6 +339,28 @@ function updateAllSizeSelects() {
     });
 }
 
+/***************************
+ * Kiểm tra trùng size 
+ ***************************/
+
+
+function isDuplicateSize(colorIndex, sizeId, currentSizeIndex) {
+    return productColors[colorIndex].sizes.some((size, idx) => idx !== currentSizeIndex && size.sizeId === sizeId);
+}
+
+function onSizeChange(colorIndex, sizeIndex, selectElement) {
+    const selectedSizeId = parseInt(selectElement.value);
+    if (isDuplicateSize(colorIndex, selectedSizeId, sizeIndex)) {
+        alert("Size này đã được chọn trong biến thể màu này. Vui lòng chọn size khác.");
+        selectElement.value = ""; // Reset lại
+        productColors[colorIndex].sizes[sizeIndex].sizeId = null;
+        return false;
+    } else {
+        productColors[colorIndex].sizes[sizeIndex].sizeId = selectedSizeId;
+        return true;
+    }
+}
+
 
 
 /***************************
@@ -340,7 +383,7 @@ function addSize(colorIndex) {
             <span>Size:</span>
             <select 
                 name="colors[${colorIndex}][sizes][${sizeIndexInArray}][sizeId]" 
-                required>
+                required onchange="onSizeChange(${colorIndex}, ${sizeIndexInArray}, this)">
                 ${createSizeOptions()}
             </select>
         </label>
@@ -396,21 +439,21 @@ function removeSize(buttonElement, colorIndex) {
  * 3. Hàm Thêm Ảnh (addImage)
  ***************************/
 
-let fileIdCounter = 0; // ID độc lập cho mỗi input file
+let fileIdCounter = 0; // ID duy nhất cho mỗi input file
 
 function addImage(colorIndex) {
     fileIdCounter++;
     const container = document.getElementById(`imagesContainer-${colorIndex}`);
     const uniqueFileId = fileIdCounter;
-    // Tạo ID duy nhất cho thẻ <img> preview
     const previewId = `previewImage-${colorIndex}-${uniqueFileId}`;
 
     const div = document.createElement("div");
     div.className = "image-item";
     div.dataset.key = uniqueFileId;
-    div.style.marginBottom = "5px";
-    div.style.display = "flex"; // Quan trọng: Giúp input và img nằm trên cùng một dòng
+    div.style.marginBottom = "8px";
+    div.style.display = "flex";
     div.style.alignItems = "center";
+    div.style.gap = "8px";
 
     div.innerHTML = `
         <input type="file" 
@@ -418,17 +461,54 @@ function addImage(colorIndex) {
             required
             data-color-index="${colorIndex}" 
             data-file-key="${uniqueFileId}"
-            onchange="previewImage(event, '${previewId}')" 
-            style="margin-right: 10px;"
+            onchange="previewImage(event, '${previewId}')"
         />
+
+        <label style="display:flex; align-items:center; gap:4px;">
+            <input type="checkbox" 
+                   name="mainImage_${colorIndex}_${uniqueFileId}" 
+                   onclick="setMainImage(${colorIndex}, ${uniqueFileId}, this)">
+            Ảnh chính
+        </label>
+
         <img id="${previewId}" 
              src="#" alt="Image Preview" 
-             style="max-width: 100px; max-height: 100px; border: 1px solid #ddd; margin-right: 10px; display: none;" />
+             style="max-width: 100px; max-height: 100px; border: 1px solid #ccc; display: none;" />
+
         <button type="button" onclick="removeImage(this)">Xóa</button>
     `;
 
     container.appendChild(div);
 }
+
+
+/***************************
+ * Hàm chỉ cho phép 1 ảnh chính mỗi màu
+ ***************************/
+
+function setMainImage(colorIndex, fileId, checkbox) {
+    const container = document.getElementById(`imagesContainer-${colorIndex}`);
+
+    // Bỏ chọn tất cả checkbox khác
+    container.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+        if (cb !== checkbox)
+            cb.checked = false;
+    });
+
+    // Cập nhật trong productColors (nếu đã có fileName)
+    if (productColors[colorIndex]) {
+        productColors[colorIndex].imageUrls.forEach(img => img.main = 0);
+
+        const fileInput = container.querySelector(`input[data-file-key="${fileId}"]`);
+        if (fileInput && fileInput.files.length > 0) {
+            const fileName = fileInput.files[0].name;
+            const imgObj = productColors[colorIndex].imageUrls.find(img => img.url === fileName);
+            if (imgObj)
+                imgObj.main = 1;
+        }
+    }
+}
+
 
 
 /***************************
@@ -471,34 +551,34 @@ function previewImage(event, previewImgId) {
 /***************************
  * Hàm thu thập tên file
  ***************************/
-
-function collectFilenamesToJson() {
-    // 1. Reset/chuẩn bị mảng imageUrls trong productColors
-    productColors.forEach(color => {
-        color.imageUrls = []; // Sẽ chứa tên file (string)
-    });
-
-    // 2. Thu thập TÊN FILE và cập nhật productColors
-    document.querySelectorAll('input[type="file"]').forEach(fileInput => {
-        const files = fileInput.files;
-
-        if (files.length > 0) {
-            const fileName = files[0].name;
-
-            // Lấy colorIndex từ DOM (vì index này được duy trì bằng reIndexColors)
-            const colorIndexElement = fileInput.closest('.color-block');
-            if (!colorIndexElement)
-                return;
-
-            const colorIndex = parseInt(colorIndexElement.dataset.index);
-
-            // Tìm và thêm tên file vào mảng productColors
-            if (productColors[colorIndex]) {
-                productColors[colorIndex].imageUrls.push(fileName);
-            }
-        }
-    });
-}
+//
+//function collectFilenamesToJson() {
+//    // 1. Reset/chuẩn bị mảng imageUrls trong productColors
+//    productColors.forEach(color => {
+//        color.imageUrls = []; // Sẽ chứa tên file (string)
+//    });
+//
+//    // 2. Thu thập TÊN FILE và cập nhật productColors
+//    document.querySelectorAll('input[type="file"]').forEach(fileInput => {
+//        const files = fileInput.files;
+//
+//        if (files.length > 0) {
+//            const fileName = files[0].name;
+//
+//            // Lấy colorIndex từ DOM (vì index này được duy trì bằng reIndexColors)
+//            const colorIndexElement = fileInput.closest('.color-block');
+//            if (!colorIndexElement)
+//                return;
+//
+//            const colorIndex = parseInt(colorIndexElement.dataset.index);
+//
+//            // Tìm và thêm tên file vào mảng productColors
+//            if (productColors[colorIndex]) {
+//                productColors[colorIndex].imageUrls.push(fileName);
+//            }
+//        }
+//    });
+//}
 
 
 
@@ -568,6 +648,14 @@ function validateForm() {
             errorMessages.push(`[Màu #${colorIndex + 1}] Vui lòng thêm ít nhất một Ảnh sản phẩm.`);
             blockErrors = true;
             isValid = false;
+        } else {
+            // Kiểm tra có ảnh chính không
+            const hasMainImage = block.querySelectorAll('.image-item input[type="checkbox"]:checked').length > 0;
+            if (!hasMainImage) {
+                errorMessages.push(`[Màu #${colorIndex + 1}] Vui lòng chọn một ảnh làm Ảnh chính.`);
+                blockErrors = true;
+                isValid = false;
+            }
         }
 
 
@@ -612,7 +700,7 @@ function updateProductColorsFromForm() {
 
 
 function collectFilenamesToJson() {
-    // Reset lại danh sách imageUrls
+    // Reset danh sách ảnh trong mỗi màu
     productColors.forEach(color => {
         color.imageUrls = [];
     });
@@ -629,14 +717,24 @@ function collectFilenamesToJson() {
                 return;
 
             const colorIndex = parseInt(colorIndexElement.dataset.index);
+            const container = document.getElementById(`imagesContainer-${colorIndex}`);
+            const checkbox = container.querySelector(
+                    `input[name="mainImage_${colorIndex}_${fileInput.dataset.fileKey}"]`
+                    );
+
+            const isMain = checkbox && checkbox.checked ? 1 : 0;
 
             if (productColors[colorIndex]) {
-                productColors[colorIndex].imageUrls.push(fileName);
+                productColors[colorIndex].imageUrls.push({
+                    url: fileName,
+                    main: isMain
+                });
             }
         }
     });
-}
 
+    console.log("Dữ liệu ảnh sau khi thu thập:", productColors);
+}
 
 
 /***************************
@@ -674,6 +772,7 @@ function handleAjaxSubmission() {
             .then(result => {
                 alert("Add Product Successfully");
                 console.log(result);
+                window.location.href = "/Shop/admin/products.jsp";
             })
             .catch(error => {
                 console.error("Lỗi gửi form:", error);

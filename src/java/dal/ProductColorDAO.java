@@ -16,7 +16,7 @@ import java.sql.SQLException;
  * @author Leo
  */
 public class ProductColorDAO extends DBContext {
-    
+
     private static ProductColorDAO instance;
 
     public ProductColorDAO() {
@@ -34,7 +34,7 @@ public class ProductColorDAO extends DBContext {
         ColorDAO colorDao = ColorDAO.getInstance();
         ProductImageDAO productImageDao = ProductImageDAO.getInstance();
         ProductVariantDAO productVariantDao = ProductVariantDAO.getInstance();
-        
+
         String sql = "SELECT [ProductColorID]\n"
                 + "      ,[ProductID]\n"
                 + "      ,[ColorID]\n"
@@ -47,18 +47,18 @@ public class ProductColorDAO extends DBContext {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 ProductColor pc = new ProductColor();
-                
+
                 int productColorId = rs.getInt("ProductColorID");
                 int colorId = rs.getInt("ColorID");
-                
+
                 pc.setProductColorID(productColorId);
                 pc.setProductID(rs.getInt("ProductID"));
                 pc.setColorID(colorId);
-                
+
                 pc.setColor(colorDao.getColorByColorId(colorId));
                 pc.setImages(productImageDao.getByProductColorId(productColorId));
                 pc.setVariants(productVariantDao.getByProductColorId(productColorId));
-                
+
                 list.add(pc);
             }
         } catch (SQLException e) {
@@ -66,5 +66,31 @@ public class ProductColorDAO extends DBContext {
         }
 
         return list;
+    }
+
+    public int insertProductColor(int productId, int colorId) {
+        String sql = """
+                     INSERT INTO [dbo].[ProductColor]
+                                ([ProductID]
+                                ,[ColorID])
+                     OUTPUT INSERTED.ProductColorID
+                     VALUES
+                     (?,?)""";     
+        
+        int newProductColorId = -1;
+        
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, productId);
+            ps.setInt(2, colorId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                newProductColorId = rs.getInt("ProductColorID");
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return newProductColorId;
     }
 }

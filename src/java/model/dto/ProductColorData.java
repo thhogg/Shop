@@ -12,18 +12,17 @@ import java.util.List;
  */
 public class ProductColorData {
     private int colorId;
-    private List<String> imageUrls;
+    private List<ProductImageData> imageUrls;
     private List<ProductSizeData> sizes;
 
-    public ProductColorData() {
-    }
+    public ProductColorData() {}
 
-    public ProductColorData(int colorId, List<String> imageUrls, List<ProductSizeData> sizes) {
+    public ProductColorData(int colorId, List<ProductImageData> imageUrls, List<ProductSizeData> sizes) {
         this.colorId = colorId;
         this.imageUrls = imageUrls;
         this.sizes = sizes;
     }
-
+    
     public int getColorId() {
         return colorId;
     }
@@ -32,11 +31,11 @@ public class ProductColorData {
         this.colorId = colorId;
     }
 
-    public List<String> getImageUrls() {
+    public List<ProductImageData> getImageUrls() {
         return imageUrls;
     }
 
-    public void setImageUrls(List<String> imageUrls) {
+    public void setImageUrls(List<ProductImageData> imageUrls) {
         this.imageUrls = imageUrls;
     }
 
@@ -47,6 +46,4 @@ public class ProductColorData {
     public void setSizes(List<ProductSizeData> sizes) {
         this.sizes = sizes;
     }
-    
-    
 }

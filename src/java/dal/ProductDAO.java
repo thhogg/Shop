@@ -7,6 +7,8 @@ package dal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import model.entity.Product;
 
 /**
@@ -27,18 +29,52 @@ public class ProductDAO extends DBContext {
         return instance;
     }
 
-    public Product getProductById(int productId) {
-
+    public List<Product> getAllProducts() {
         ProductColorDAO productColorDao = ProductColorDAO.getInstance();
+        List<Product> list = new ArrayList<>();
+        String sql = """
+                     SELECT [ProductID]
+                           ,[CategoryID]
+                           ,[ProductName]
+                           ,[Price]
+                           ,[Description]
+                           ,[CreatedAt]
+                     FROM [dbo].[Product]""";
 
-        String sql = "SELECT [ProductID]\n"
-                + "      ,[CategoryID]\n"
-                + "      ,[ProductName]\n"
-                + "      ,[Price]\n"
-                + "      ,[Description]\n"
-                + "      ,[CreatedAt]\n"
-                + "FROM [dbo].[Product]\n"
-                + "WHERE ProductID = ?";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Product p = new Product();
+                int productId = rs.getInt("ProductID");
+                p.setProductID(productId);
+                p.setCategoryID(rs.getInt("CategoryID"));
+                p.setProductName(rs.getString("ProductName"));
+                p.setPrice(rs.getInt("Price"));
+                p.setDescription(rs.getString("Description"));
+                p.setCreatedAt(rs.getDate("CreatedAt"));
+
+                p.setProductColors(productColorDao.getByProductId(productId));
+
+                list.add(p);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
+    }
+
+    public Product getProductById(int productId) {
+        ProductColorDAO productColorDao = ProductColorDAO.getInstance();
+        String sql = """
+                     SELECT [ProductID]
+                           ,[CategoryID]
+                           ,[ProductName]
+                           ,[Price]
+                           ,[Description]
+                           ,[CreatedAt]
+                     FROM [dbo].[Product]
+                     WHERE ProductID = ?""";
 
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -74,14 +110,14 @@ public class ProductDAO extends DBContext {
                      OUTPUT INSERTED.ProductID
                      VALUES
                      (?,?,?,?,GETDATE())""";
-        
+
         int newProductId = -1;
-        
+
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, categoryId);
             ps.setString(2, productName);
-            ps.setInt(3, price); 
+            ps.setInt(3, price);
             ps.setString(4, description);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
@@ -92,5 +128,28 @@ public class ProductDAO extends DBContext {
         }
 
         return newProductId;
+    }
+
+    public void updateProduct(int productId, int subCategoryId, String productName, int price, String description) {
+        String sql = """
+                     UPDATE [dbo].[Product]
+                     SET [CategoryID] = ?
+                           ,[ProductName] = ?
+                           ,[Price] = ?
+                           ,[Description] = ?
+                     WHERE ProductID = ?""";
+        
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, subCategoryId);
+            ps.setString(2, productName);
+            ps.setInt(3, price);
+            ps.setString(4, description);
+            ps.setInt(5, productId);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
     }
 }

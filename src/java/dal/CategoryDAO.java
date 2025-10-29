@@ -16,7 +16,7 @@ import model.entity.Category;
  * @author Leo
  */
 public class CategoryDAO extends DBContext {
-    
+
     private static CategoryDAO instance;
 
     public CategoryDAO() {
@@ -56,5 +56,29 @@ public class CategoryDAO extends DBContext {
             System.out.println(e);
         }
         return list;
+    }
+
+    public Category getCategoryById(int categoryId) {
+        String sql = """
+                     SELECT [CategoryID]
+                           ,[CategoryName]
+                           ,[ParentID]
+                     FROM [dbo].[Category]
+                     WHERE CategoryID = ?""";
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, categoryId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                Category c = new Category();
+                c.setCategoryId(rs.getInt("CategoryID"));
+                c.setCategoryName(rs.getString("CategoryName"));
+                c.setParentId(rs.getInt("ParentID"));
+                return c;
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return null;
     }
 }

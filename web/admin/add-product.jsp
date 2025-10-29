@@ -14,46 +14,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Form nhập Product</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
-        <link rel="stylesheet" href="css/mystyle.css">
-        <!--        <style>
-                    body {
-                        font-family: Arial, sans-serif;
-                        margin: 20px;
-                    }
-                    label {
-                        display: block;
-                        margin-top: 10px;
-                    }
-                    input, select, textarea {
-                        width: 300px;
-                        padding: 5px;
-                        margin-top: 5px;
-                    }
-                    .color-block {
-                        border: 1px solid #ccc;
-                        padding: 10px;
-                        margin-top: 15px;
-                        background: #f9f9f9;
-                    }
-                    .size-row, .image-row {
-                        display: flex;
-                        gap: 10px;
-                        margin-top: 5px;
-                    }
-                    button {
-                        margin-top: 10px;
-                    }
-                    .remove-btn {
-                        background: #e74c3c;
-                        color: white;
-                        border: none;
-                        padding: 4px 8px;
-                        cursor: pointer;
-                    }
-                    .remove-btn:hover {
-                        background: #c0392b;
-                    }
-                </style>-->
+        <link rel="stylesheet" href="css/mystyle.css">   
+        <link rel="stylesheet" href="css/add-product.css"> 
     </head>
     <body>
 
@@ -63,7 +25,7 @@
         <div class="main">
 
             <div class="breadcrumb">
-                Home <span>/</span> E-commerce <span>/</span> Products
+                <a href="../home">Home</a> <span>/</span> <a href="dashboard.jsp">Admin</a> <span>/</span> Add Product
             </div>
 
             <h1>Nhập thông tin Product</h1>
@@ -114,15 +76,16 @@
                 </div>
 
                 <button type="button" onclick="addColor()">+ Thêm Màu Mới</button>
-
-                <button type="button" onclick="handleAjaxSubmission()">Thêm sản phẩm (AJAX)</button>
+                <br/>
+                <div id="submit-btn">
+                    <button type="button" onclick="handleAjaxSubmission()">Thêm sản phẩm</button>
+                </div>
             </form>
 
         </div>
         <!-- MAIN END-->
 
-
-        <script src="js/myscript.js"></script>
+        <script src="js/add-product.js"></script>
     </body>
 </html>
 

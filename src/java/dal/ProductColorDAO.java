@@ -10,6 +10,7 @@ import model.entity.ProductColor;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import model.dto.ProductColorData;
 
 /**
  *
@@ -35,11 +36,12 @@ public class ProductColorDAO extends DBContext {
         ProductImageDAO productImageDao = ProductImageDAO.getInstance();
         ProductVariantDAO productVariantDao = ProductVariantDAO.getInstance();
 
-        String sql = "SELECT [ProductColorID]\n"
-                + "      ,[ProductID]\n"
-                + "      ,[ColorID]\n"
-                + "FROM [dbo].[ProductColor]\n"
-                + "WHERE ProductID = ?";
+        String sql = """
+                     SELECT [ProductColorID]
+                           ,[ProductID]
+                           ,[ColorID]
+                     FROM [dbo].[ProductColor]
+                     WHERE ProductID = ?""";
 
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
@@ -75,10 +77,10 @@ public class ProductColorDAO extends DBContext {
                                 ,[ColorID])
                      OUTPUT INSERTED.ProductColorID
                      VALUES
-                     (?,?)""";     
-        
+                     (?,?)""";
+
         int newProductColorId = -1;
-        
+
         try {
             PreparedStatement ps = connection.prepareStatement(sql);
             ps.setInt(1, productId);
@@ -92,5 +94,46 @@ public class ProductColorDAO extends DBContext {
         }
 
         return newProductColorId;
+    }
+
+    public void deleteByProductId(int productId) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    public List<ProductColorData> getProductColorDatasByProductId(int productId) {
+        List<ProductColorData> list = new ArrayList<>();
+        ColorDAO colorDao = ColorDAO.getInstance();
+        ProductImageDAO productImageDao = ProductImageDAO.getInstance();
+        ProductVariantDAO productVariantDao = ProductVariantDAO.getInstance();
+
+        String sql = """
+                     SELECT [ProductColorID]
+                           ,[ProductID]
+                           ,[ColorID]
+                     FROM [dbo].[ProductColor]
+                     WHERE ProductID = ?""";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, productId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ProductColorData pcd = new ProductColorData();
+
+                int productColorId = rs.getInt("ProductColorID");
+                int colorId = rs.getInt("ColorID");
+
+                pcd.setColorId(colorId);
+
+                pcd.setImageUrls(productImageDao.getProductImageDataByProductColorId(productColorId));
+                pcd.setSizes(productVariantDao.getProductSizeDataByProductColorId(productColorId));
+
+                list.add(pcd);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+
+        return list;
     }
 }

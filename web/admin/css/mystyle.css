@@ -2,13 +2,16 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: "Inter", sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 body {
   display: flex;
   background: #f9fafb;
   color: #111827;
   min-height: 100vh;
+}
+a{
+    text-decoration: none;
 }
 
 /* ===== SIDEBAR BEGIN ===== */
@@ -161,6 +164,7 @@ h1 {
   font-weight: 500;
   cursor: pointer;
   float: right;
+  text-decoration: none;
 }
 .add-btn:hover {
   background: #0284c7;

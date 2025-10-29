@@ -198,8 +198,7 @@ function addColor() {
         <label>Tên màu:
             <select name="colors[${colorIndex}][colorId]" required onchange="onColorChange(${colorIndex}, this)">
                 ${createColorOptions()}
-            </select>
-            <span id="preview-${colorIndex}" class="color-preview"></span>
+            </select>          
         </label>
 
         
@@ -462,8 +461,7 @@ function addImage(colorIndex) {
             data-color-index="${colorIndex}" 
             data-file-key="${uniqueFileId}"
             onchange="previewImage(event, '${previewId}')"
-        />
-
+        />      
         <label style="display:flex; align-items:center; gap:4px;">
             <input type="checkbox" 
                    name="mainImage_${colorIndex}_${uniqueFileId}" 
@@ -772,7 +770,7 @@ function handleAjaxSubmission() {
             .then(result => {
                 alert("Add Product Successfully");
                 console.log(result);
-                window.location.href = "/Shop/admin/products.jsp";
+                window.location.href = "/Shop/admin/products";
             })
             .catch(error => {
                 console.error("Lỗi gửi form:", error);

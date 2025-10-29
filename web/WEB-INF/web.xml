@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="6.0" xmlns="https://jakarta.ee/xml/ns/jakartaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
-    
     <servlet>
         <servlet-name>Shop</servlet-name>
         <servlet-class>controller.home.Shop</servlet-class>
@@ -36,6 +35,22 @@
     <servlet>
         <servlet-name>FrontController</servlet-name>
         <servlet-class>controller.api.FrontController</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ManageProducts</servlet-name>
+        <servlet-class>controller.admin.MangeProducts</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Dashboard</servlet-name>
+        <servlet-class>controller.admin.Dashboard</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ManageUsers</servlet-name>
+        <servlet-class>controller.admin.ManageUsers</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditProduct</servlet-name>
+        <servlet-class>controller.admin.EditProduct</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Shop</servlet-name>
@@ -77,4 +92,20 @@
         <param-name>dir-upload</param-name>
         <param-value>uploads</param-value>
     </context-param>
+    <servlet-mapping>
+        <servlet-name>ManageProducts</servlet-name>
+        <url-pattern>/admin/products</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Dashboard</servlet-name>
+        <url-pattern>/Dashboard</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ManageUsers</servlet-name>
+        <url-pattern>/admin/users</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditProduct</servlet-name>
+        <url-pattern>/admin/edit</url-pattern>
+    </servlet-mapping>
 </web-app>

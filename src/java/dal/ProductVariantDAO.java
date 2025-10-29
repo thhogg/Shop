@@ -10,6 +10,7 @@ import model.entity.ProductVariant;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import model.dto.ProductSizeData;
 
 /**
  *
@@ -81,5 +82,34 @@ public class ProductVariantDAO extends DBContext {
         } catch (SQLException e) {
             System.out.println(e);
         }
+    }
+    
+    
+    public List<ProductSizeData> getProductSizeDataByProductColorId(int productColorID) {
+        List<ProductSizeData> list = new ArrayList<>();
+
+        String sql = "SELECT [ProductVariantID]\n"
+                + "      ,[ProductColorID]\n"
+                + "      ,[SizeID]\n"
+                + "      ,[Quantity]\n"
+                + "FROM [dbo].[ProductVariant]\n"
+                + "WHERE ProductColorID = ?";
+
+        try {
+            PreparedStatement ps = connection.prepareStatement(sql);
+            ps.setInt(1, productColorID);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ProductSizeData p = new ProductSizeData();
+
+                p.setSizeId(rs.getInt("SizeID"));
+                p.setQuantity(rs.getInt("Quantity"));
+
+                list.add(p);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return list;
     }
 }
